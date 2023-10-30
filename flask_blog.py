@@ -1,7 +1,10 @@
 from flask import Flask, render_template,url_for
+from forms import RegistrationForm,LoginForm
 
 # Creating an instance of the Flask class and storing it in a variable called 'app'.
 app = Flask(__name__)
+app.config['SECRET_KEY']='c2bbbe4aa84532a255b3dde019dcbdb8'
+#Secret Keys are required to protect the website from attacks.
 
 # Imagine we made a database call and got this list, and now we want to pass it to the website.
 # We can do this by passing 'posts' as an argument to the 'posts' variable in render_template,
@@ -31,7 +34,7 @@ posts = [
 # Adding the home page
 @app.route("/")
 # Route decorators handle all the backend functionality, allowing us to define a function that returns content for the website.
-def hello_world():
+def home():
     return render_template('home.html', posts=posts)
 
 # Adding the about page
@@ -41,6 +44,15 @@ def about():
     return render_template('about.html')
 
 # If you want to add more routes, simply add more route decorators.
+@app.route("/register")
+def register():
+    form= RegistrationForm()
+    return render_template('register.html',title='Sign_Up',form=form)
+
+@app.route("/login")
+def login():
+    form=LoginForm()
+    return render_template('login.html',title='Login_In',form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
