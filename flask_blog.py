@@ -1,24 +1,46 @@
-#You should add your flask application to environment variable to run the app else add app.run() at the end
-#You also turn on the debugging mode for live server.
-from flask import Flask
-#creating a instance of flask class in a variable called the app.
+from flask import Flask, render_template,url_for
+
+# Creating an instance of the Flask class and storing it in a variable called 'app'.
 app = Flask(__name__)
 
-#Adding the home page
+# Imagine we made a database call and got this list, and now we want to pass it to the website.
+# We can do this by passing 'posts' as an argument to the 'posts' variable in render_template,
+# and then we can access it in the HTML page.
+
+posts = [
+    {
+        'Author': 'Vaishakh M',
+        'Title': 'My Blog Page',
+        'Content': 'Cross Validation',
+        'Date': '28-10-23'
+    },
+   {
+        'Author': 'Raveendran P V',
+        'Title': 'Fitness',
+        'Content': 'Yoga For Health',
+        'Date': '18-10-23'
+    },
+    {
+        'Author': 'Lakshmi M',
+        'Title': 'Tutorial Page',
+        'Content': 'Feature Engineering',
+        'Date': '28-03-23'
+    }
+]
+
+# Adding the home page
 @app.route("/")
-#Routes are what we type into browsers to go into different websites
-#Route decorators handles all the complicated backend stuff and simply allows us to write a function that returns what is given to the website
-#'/' represents the home page of the website
+# Route decorators handle all the backend functionality, allowing us to define a function that returns content for the website.
 def hello_world():
-    return "<h1>Welcome Home Page!</h1>"
+    return render_template('home.html', posts=posts)
 
-#Adding the about page
+# Adding the about page
 @app.route("/about")
-#The about function will return a html to the about page
+# The 'about' function returns an HTML page for the 'about' page.
 def about():
-    return "<h1>HURRAY ABOUT PAGE</h1>"
-#if you want to add more routers it is simply add more router decorators.
+    return render_template('about.html')
 
+# If you want to add more routes, simply add more route decorators.
 
-if __name__=='__main__':
+if __name__ == '__main__':
     app.run(debug=True)
