@@ -1,4 +1,4 @@
-from flask import Flask, render_template,url_for
+from flask import Flask, render_template,url_for,flash,redirect
 from forms import RegistrationForm,LoginForm
 
 # Creating an instance of the Flask class and storing it in a variable called 'app'.
@@ -44,9 +44,13 @@ def about():
     return render_template('about.html')
 
 # If you want to add more routes, simply add more route decorators.
-@app.route("/register")
+#We should allow routes to accept messages from post methods to accept the datas.
+@app.route("/register",methods=['GET','POST'])
 def register():
     form= RegistrationForm()
+    if form.validate_on_submit():#You are validation your form
+        flash(f'Account created for {form.UserName.data}!','success')
+        return redirect(url_for('home'))
     return render_template('register.html',title='Sign_Up',form=form)
 
 @app.route("/login")
